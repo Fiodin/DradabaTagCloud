@@ -1,0 +1,53 @@
+/**
+ * DradabaTagCloud – Stylesheet
+ *
+ * Funktioniert mit allen Skins (Citizen, Vector, MonoBook, Timeless …).
+ * Farben erben vom jeweiligen Skin, daher kein hartkodiertes Farbschema.
+ */
+
+/* Container: Flex-Layout mit Zeilenumbruch */
+.dradaba-tagcloud {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: baseline;
+	justify-content: center;
+	gap: 0.35em 0.65em;
+	padding: 1em 0.5em;
+	line-height: 1.6;
+}
+
+/* Einzelne Einträge */
+.dradaba-tagcloud-item {
+	display: inline-block;
+	padding: 0.15em 0.35em;
+	border-radius: 0.25em;
+	text-decoration: none;
+	white-space: nowrap;
+	transition: background-color 0.15s ease, opacity 0.15s ease;
+}
+
+/* Hover-Effekt – dezent, skin-unabhängig */
+.dradaba-tagcloud-item:hover {
+	background-color: rgba(0, 0, 0, 0.06);
+	text-decoration: none;
+}
+
+/* Dark-Mode-Kompatibilität (Citizen + andere) */
+@media ( prefers-color-scheme: dark ) {
+	.dradaba-tagcloud-item:hover {
+		background-color: rgba(255, 255, 255, 0.08);
+	}
+}
+
+/* Citizen-Skin Dark Mode (überschreibt per data-Attribut) */
+html[data-citizen-theme="dark"] .dradaba-tagcloud-item:hover {
+	background-color: rgba(255, 255, 255, 0.08);
+}
+
+/* Leere Wolke */
+.dradaba-tagcloud-empty {
+	padding: 1em;
+	text-align: center;
+	opacity: 0.6;
+	font-style: italic;
+}
