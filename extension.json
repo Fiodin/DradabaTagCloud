@@ -1,0 +1,40 @@
+{
+	"name": "DradabaTagCloud",
+	"version": "1.0.0",
+	"author": [
+		"DradabaTagCloud"
+	],
+	"url": "https://dradaba.de",
+	"descriptionmsg": "dradaba-tagcloud-desc",
+	"license-name": "GPL-2.0-or-later",
+	"type": "parserhook",
+	"requires": {
+		"MediaWiki": ">= 1.42.0",
+		"platform": {
+			"php": ">= 8.1"
+		}
+	},
+	"AutoloadNamespaces": {
+		"DradabaTagCloud\\": "includes/"
+	},
+	"Hooks": {
+		"ParserFirstCallInit": "DradabaTagCloud\\Hooks::onParserFirstCallInit"
+	},
+	"MessagesDirs": {
+		"DradabaTagCloud": [
+			"i18n"
+		]
+	},
+	"ResourceModules": {
+		"ext.dradaba.tagcloud": {
+			"styles": [
+				"resources/ext.dradaba.tagcloud.css"
+			]
+		}
+	},
+	"ResourceFileModulePaths": {
+		"localBasePath": "",
+		"remoteExtPath": "DradabaTagCloud"
+	},
+	"manifest_version": 2
+}
