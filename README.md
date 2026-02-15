@@ -74,4 +74,4 @@ Auf jeder Wiki-Seite den Parser-Tag einfügen:
 
 ## Lizenz
 
-GPL-2.0-or-later
+GPL-3.0-or-later
