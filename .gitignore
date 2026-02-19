@@ -1,0 +1,11 @@
+# Debian / Linux Systemdateien
+.DS_Store
+.directory
+*~
+
+# Falls du VS Code nutzt
+.vscode/
+
+# Falls dein Wiki Log-Dateien oder Backups erstellt
+*.log
+*.bak
