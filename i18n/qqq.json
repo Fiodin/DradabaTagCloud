@@ -1,9 +1,5 @@
 {
-	"@metadata": {
-		"authors": [
-			"DradabaTagCloud"
-		]
-	},
+	"@metadata": {},
 	"dradaba-tagcloud-desc": "{{desc|what=extension}}",
 	"dradaba-tagcloud-empty": "Shown when no categories match the filter criteria.",
 	"dradaba-tagcloud-tooltip": "Tooltip for each tag. $1 is the category name, $2 is the page count."
