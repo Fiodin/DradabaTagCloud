@@ -1,7 +1,7 @@
 {
 	"name": "DradabaTagCloud",
 	"version": "1.1.0",
-	"author": [],
+	"author": ["Drachendatenbank Team"],
 	"url": "https://dradaba.de",
 	"descriptionmsg": "dradaba-tagcloud-desc",
 	"license-name": "GPL-2.0-or-later",
