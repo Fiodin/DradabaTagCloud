@@ -2,15 +2,29 @@
 /**
  * DradabaTagCloud – Kategorie-Wortwolke für MediaWiki 1.42+
  *
+ * Nutzung:
+ *   <tagcloud />
+ *   <tagcloud min="3" max="40" exclude="Wartung|Versteckte Kategorie" minsize="80" maxsize="220" />
+ *   <tagcloud only="Drachen|Lenkdrachen|Einleiner" />
+ *
+ * Parameter:
+ *   min      – Mindestanzahl Seiten in einer Kategorie (Standard: 1)
+ *   max      – Maximale Anzahl angezeigter Kategorien (Standard: 0 = alle)
+ *   exclude  – Pipe-getrennte Liste auszuschließender Kategorien
+ *   only     – Pipe-getrennte Whitelist (nur diese Kategorien anzeigen)
+ *   minsize  – Kleinste Schriftgröße in Prozent (Standard: 80)
+ *   maxsize  – Größte Schriftgröße in Prozent (Standard: 200)
+ *   refresh  – Cache-Dauer in Sekunden (Standard: 3600 = 1 Stunde)
+ *
  * @license GPL-2.0-or-later
  */
 
 namespace DradabaTagCloud;
 
 use MediaWiki\MediaWikiServices;
+use MediaWiki\Title\Title;
 use Parser;
 use PPFrame;
-use MediaWiki\Title\Title;
 
 class Hooks {
 
@@ -52,13 +66,16 @@ class Hooks {
 		return self::buildHtml( $categories, $minSize, $maxSize );
 	}
 
+	/**
+	 * Pipe-getrennte Liste parsen und normalisieren.
+	 */
 	private static function parseList( string $value ): array {
 		if ( $value === '' ) {
 			return [];
 		}
 		return array_values( array_filter( array_map(
 			static fn( string $item ): string => str_replace( ' ', '_', trim( $item ) ),
-			explode( ',', $value )
+			explode( '|', $value )
 		) ) );
 	}
 
@@ -70,17 +87,14 @@ class Hooks {
 	): array {
 		$services = MediaWikiServices::getInstance();
 
-		// DB-Verbindung: MW 1.44+ vs. ältere Versionen
 		if ( method_exists( $services, 'getConnectionProvider' ) ) {
 			$dbr = $services->getConnectionProvider()->getReplicaDatabase();
 		} else {
 			$dbr = $services->getDBLoadBalancer()->getConnection( DB_REPLICA );
 		}
 
-		// Einfache Query: nur category-Tabelle, kein JOIN, kein GROUP BY
 		$conditions = [ 'cat_pages >= ' . intval( $min ) ];
 
-		// Whitelist direkt in der Query (sicher über Array-Syntax)
 		if ( !empty( $only ) ) {
 			$conditions['cat_title'] = $only;
 		}
@@ -94,7 +108,6 @@ class Hooks {
 
 		$res = $queryBuilder->fetchResultSet();
 
-		// Ergebnisse sammeln, Exclude-Filter in PHP (einfacher + kompatibel)
 		$excludeMap = array_flip( $exclude );
 		$categories = [];
 
@@ -108,7 +121,6 @@ class Hooks {
 			];
 		}
 
-		// Limit anwenden (Daten sind bereits nach cat_pages DESC sortiert)
 		if ( $max > 0 && count( $categories ) > $max ) {
 			$categories = array_slice( $categories, 0, $max );
 		}
