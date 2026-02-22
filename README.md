@@ -55,15 +55,15 @@ Auf jeder Wiki-Seite den Parser-Tag einfügen:
 
 ## Parameter
 
-| Parameter | Standard | Beschreibung                                      |
-| --------- | -------- | ------------------------------------------------- |
-| `min`     | `1`      | Mindestanzahl Seiten in einer Kategorie           |
-| `max`     | `0`      | Maximale Anzahl angezeigter Kategorien (0 = alle) |
-| `exclude` | –        | Kommagetrennte Liste auszuschließender Kategorien |
-| `only`    | –        | Whitelist – nur diese Kategorien anzeigen         |
-| `minsize` | `80`     | Kleinste Schriftgröße in Prozent                  |
-| `maxsize` | `200`    | Größte Schriftgröße in Prozent                    |
-| `refresh` | `3600`   | Cache-Dauer in Sekunden (Standard: 1 Stunde)      |
+| Parameter | Standard | Beschreibung                                                    |
+| --------- | -------- | --------------------------------------------------------------- |
+| `min`     | `1`      | Mindestanzahl Seiten in einer Kategorie                         |
+| `max`     | `0`      | Maximale Anzahl angezeigter Kategorien (0 = alle)               |
+| `exclude` | –        | Liste auszuschließender Kategorien. Trennung mit Pipe \|        |
+| `only`    | –        | Whitelist – nur diese Kategorien anzeigen. Trennung mit Pipe \| |
+| `minsize` | `80`     | Kleinste Schriftgröße in Prozent                                |
+| `maxsize` | `200`    | Größte Schriftgröße in Prozent                                  |
+| `refresh` | `3600`   | Cache-Dauer in Sekunden (Standard: 1 Stunde)                    |
 
 ## Hinweise
 
