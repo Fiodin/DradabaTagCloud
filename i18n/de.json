@@ -1,9 +1,5 @@
 {
-	"@metadata": {
-		"authors": [
-			"DradabaTagCloud"
-		]
-	},
+	"@metadata": {},
 	"dradaba-tagcloud-desc": "Zeigt eine Wortwolke der Wiki-Kategorien an.",
 	"dradaba-tagcloud-empty": "Keine Kategorien gefunden.",
 	"dradaba-tagcloud-tooltip": "$1 ($2 {{PLURAL:$2|Seite|Seiten}})"
