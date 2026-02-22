@@ -10,7 +10,6 @@
 	display: flex;
 	flex-wrap: wrap;
 	align-items: baseline;
-	/*	justify-content: center; oder folgende Zeile für linksbündig*/
 	justify-content: flex-start;
 	gap: 0.35em 0.65em;
 	padding: 1em 0.5em;
