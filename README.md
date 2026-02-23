@@ -38,13 +38,13 @@ Auf jeder Wiki-Seite den Parser-Tag einfügen:
 ### Mit Filtern
 
 ```wiki
-<tagcloud min="3" max="40" exclude="Wartung,Versteckte_Kategorie" />
+<tagcloud min="3" max="40" exclude="Wartung|Versteckte Kategorie" />
 ```
 
 ### Nur bestimmte Kategorien (Whitelist)
 
 ```wiki
-<tagcloud only="Drachen,Lenkdrachen,Einleiner,Vierleiner" />
+<tagcloud only="Drachen|Lenkdrachen|Einleiner|Vierleiner" />
 ```
 
 ### Schriftgröße anpassen

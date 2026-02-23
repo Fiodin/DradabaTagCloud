@@ -79,54 +79,66 @@ class Hooks {
 		) ) );
 	}
 
-	private static function fetchCategories(
-		int $min,
-		int $max,
-		array $exclude,
-		array $only
-	): array {
-		$services = MediaWikiServices::getInstance();
+		private static function fetchCategories(
+				int $min,
+			    int $max,
+ 		    	array $exclude,
+ 		   		array $only
+		): array {
+		    	$services = MediaWikiServices::getInstance();
 
-		if ( method_exists( $services, 'getConnectionProvider' ) ) {
-			$dbr = $services->getConnectionProvider()->getReplicaDatabase();
-		} else {
-			$dbr = $services->getDBLoadBalancer()->getConnection( DB_REPLICA );
+   			 	if ( method_exists( $services, 'getConnectionProvider' ) ) {
+   		   				$dbr = $services->getConnectionProvider()->getReplicaDatabase();
+    			} else {
+        				$dbr = $services->getDBLoadBalancer()->getConnection( DB_REPLICA );
+    			}
+
+    			$conditions = [ 'cat_pages >= ' . intval( $min ) ];
+
+    			if ( !empty( $only ) ) {
+        				$conditions['cat_title'] = $only;
+    			}
+
+    			// Versteckte Kategorien ausfiltern:
+    			// LEFT JOIN auf page + page_props, wo pp_propname = 'hiddencat'
+    			// Nur Kategorien behalten, die KEIN hiddencat-Property haben
+    			$queryBuilder = $dbr->newSelectQueryBuilder()
+        		->select( [ 'cat_title', 'cat_pages' ] )
+        		->from( 'category' )
+        		->leftJoin( 'page', null, [
+            			'page_title = cat_title',
+            			'page_namespace' => NS_CATEGORY,
+        		] )
+        		->leftJoin( 'page_props', null, [
+            			'pp_page = page_id',
+            			'pp_propname' => 'hiddencat',
+        		] )
+        		->where( $conditions )
+        		->andWhere( [ 'pp_page' => null ] )
+        		->orderBy( 'cat_pages', 'DESC' )
+        		->caller( __METHOD__ );
+
+    			$res = $queryBuilder->fetchResultSet();
+
+    			$excludeMap = array_flip( $exclude );
+    			$categories = [];
+
+    			foreach ( $res as $row ) {
+        				if ( isset( $excludeMap[$row->cat_title] ) ) {
+            				continue;
+        				}
+        				$categories[] = [
+            					'name'  => $row->cat_title,
+            					'count' => intval( $row->cat_pages ),
+        				];
+    			}
+
+    			if ( $max > 0 && count( $categories ) > $max ) {
+        				$categories = array_slice( $categories, 0, $max );
+   				}
+
+    			return $categories;
 		}
-
-		$conditions = [ 'cat_pages >= ' . intval( $min ) ];
-
-		if ( !empty( $only ) ) {
-			$conditions['cat_title'] = $only;
-		}
-
-		$queryBuilder = $dbr->newSelectQueryBuilder()
-			->select( [ 'cat_title', 'cat_pages' ] )
-			->from( 'category' )
-			->where( $conditions )
-			->orderBy( 'cat_pages', 'DESC' )
-			->caller( __METHOD__ );
-
-		$res = $queryBuilder->fetchResultSet();
-
-		$excludeMap = array_flip( $exclude );
-		$categories = [];
-
-		foreach ( $res as $row ) {
-			if ( isset( $excludeMap[$row->cat_title] ) ) {
-				continue;
-			}
-			$categories[] = [
-				'name'  => $row->cat_title,
-				'count' => intval( $row->cat_pages ),
-			];
-		}
-
-		if ( $max > 0 && count( $categories ) > $max ) {
-			$categories = array_slice( $categories, 0, $max );
-		}
-
-		return $categories;
-	}
 
 	private static function buildHtml( array $categories, int $minSize, int $maxSize ): string {
 		$counts   = array_column( $categories, 'count' );
